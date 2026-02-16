@@ -48,6 +48,13 @@ function todoInputEnabled(): void {
                     console.log(`${el.todoText}, ID: ${el.id}`)
                 }
             })
+        }else if(answ.includes("remove")){
+            const deleteTodoId = Number(answ.slice(11))
+            todoListArray.forEach((el, i) => {
+                if(i == deleteTodoId) {
+                    todoListArray.splice(i, 1)
+                }
+            })
         }
         todoInputEnabled()
     });
