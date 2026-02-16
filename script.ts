@@ -20,10 +20,10 @@ function todoInputEnabled(): void {
         if(answ.startsWith("todo")){
             //перевірка для команд на слово "todo"
             if(answ.includes("help")){
-                console.log("TODO COMMANDS\n todo help - todo commands\n todo add {todos} - create new todo\n todo remove {id} - delete your todo from id\n todo list - see todo list\n todo search {text} - знайде завдання за вмістом тексту")
+                console.log("TODO COMMANDS\n todo help - список команд\n todo add {todos} - створити нове завдання\n todo remove {id} - удалить задачу по індитифікатору\n todo list - переглянути усі задачі\n todo search {text} - знайде завдання за вмістом тексту")
             }else if(answ.includes("add")){
                 const todoTextCreating: string = answ.slice(9);
-                const todoId: number = todoListArray.length;
+                const todoId: number = todoListArray.length +1;
                 const todoDateCreate: string = new Date().toString();
                 //структуризація туду.
                 const todoEl: ITodos = {
@@ -33,29 +33,35 @@ function todoInputEnabled(): void {
                 }
                 //створення туду елементу.
                 todoListArray.push(todoEl);
+                console.log(`Ви додали нову задачу: "${todoEl.todoText}"`)
                 //додаємо туду елемент в масив
-           }else if(answ.includes("list") && todoListArray.length != 0){
+           }else if(answ.includes("list")){
+               if(todoListArray.length != 0) {
               todoListArray.forEach((el, i) => {
                 console.log(`${el.todoText}, ID: ${el.id}`)
               })
-           }else {
-               console.log("[TODO] todo list not searched use: todo add {todo text}")
-           }
-        }else if(answ.includes("search")) {
+            }else {
+                console.log(`Вибачте але ваш список задач пустий. Використайте "todo help" `)
+            }
+           }else if(answ.includes("search")) {
             todoListArray.forEach((el, ind) => {
-                const todoElementTextSearch = answ.slice(11);
-                if(el.todoText.includes(todoElementTextSearch)) {
+                if(el.todoText.includes(answ.slice(12))) {
                     console.log(`${el.todoText}, ID: ${el.id}`)
                 }
             })
         }else if(answ.includes("remove")){
-            const deleteTodoId = Number(answ.slice(11))
             todoListArray.forEach((el, i) => {
-                if(i == deleteTodoId) {
+                if(i+1 == Number(answ.slice(11)) && todoListArray.length != 0) {
                     todoListArray.splice(i, 1)
+                    console.log(`Успіх задачу видаленно`)
+                }else {
+                    console.log("Помилка: задачу не знайдено")
                 }
             })
         }
+    }else {
+        console.error(`Команду не знайдунно використайте "todo help"`)
+    }
         todoInputEnabled()
     });
 }
